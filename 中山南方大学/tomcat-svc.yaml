@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: zhongshandaxuenanfangxueyuan
+  namespace: default
+spec:
+  ports:
+  - port: 80
+    targetPort: 8080
+    name: tomcat-http
+  selector:
+    k8s-app: zhongshandaxuenanfangxueyuan

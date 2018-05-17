@@ -1,0 +1,31 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: zhongshandaxuenanfangxueyuan
+  namespace: default
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        k8s-app: zhongshandaxuenanfangxueyuan
+    spec:
+      containers:
+      - name: zhongshandaxuenanfangxueyuan-tomcat
+        image: registry-vpc.cn-shanghai.aliyuncs.com/axf-school/k8s-tomcat:1.0
+        imagePullPolicy: Always
+        volumeMounts:
+        - mountPath: /nas
+          name: nas
+      - name: zhongshandaxuenanfangxueyuan-httpd
+        image: registry-vpc.cn-shanghai.aliyuncs.com/axf-school/k8s-httpd:1.1
+        imagePullPolicy: Always
+        volumeMounts:
+        - mountPath: /nas
+          name: nas
+      volumes:
+      - name: nas
+        persistentVolumeClaim:
+          claimName: zhongshannanfang
+      imagePullSecrets:
+      - name: regcred

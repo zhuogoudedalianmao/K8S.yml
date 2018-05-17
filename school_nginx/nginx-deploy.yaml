@@ -1,0 +1,30 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: school-nginx
+  namespace: default
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        k8s-app: school-nginx
+    spec:
+      containers:
+      - name: nginx
+        image: registry-vpc.cn-shanghai.aliyuncs.com/axf-school/k8s-nginx:1.0
+        imagePullPolicy: Always
+        volumeMounts:
+        - mountPath: /etc/nginx/conf.d
+          name: config
+        - mountPath: /var/log/nginx
+          name: log
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: schoolnginxconfig
+      - name: log
+        persistentVolumeClaim:
+          claimName: schoolnginxlog
+      imagePullSecrets:
+      - name: regcred
